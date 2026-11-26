@@ -5,10 +5,12 @@
 
    Each time the music starts it picks a track at random, and when a track
    ends it fades into another one, never the same twice in a row. Only the
-   track about to play is loaded. Music files play from plain audio elements
-   with their volume set directly (Chrome silences file:// audio routed
-   through Web Audio); the ambient chords and the pop are synthesised. Nothing
-   is fetched, so it all works when the page is opened straight from disk. */
+   track about to play is loaded. Music files play from audio elements: over
+   http(s) each one runs through a Web Audio gain, because iPhones and iPads
+   ignore volume set on the element; opened from disk, the element's volume is
+   set directly instead, because Chrome silences file:// audio routed through
+   Web Audio. The ambient chords and the pop are synthesised. Nothing is
+   fetched, so it all works when the page is opened straight from disk. */
 (function () {
   'use strict';
 
@@ -168,10 +170,29 @@
   }
 
   // A playing track: a synth or an audio element, with its own fade (0 to 1).
+  var ROUTED = /^https?:$/.test(location.protocol);
+  var deckGains = [null, null];
   function deck(i) {
-    if (!decks[i]) { decks[i] = document.createElement('audio'); decks[i].preload = 'auto'; }
+    if (!decks[i]) {
+      decks[i] = document.createElement('audio');
+      decks[i].preload = 'auto';
+      if (ROUTED) {
+        deckGains[i] = ctx.createGain();
+        deckGains[i].gain.value = 0;
+        ctx.createMediaElementSource(decks[i]).connect(deckGains[i]);
+        deckGains[i].connect(ctx.destination);
+      }
+    }
     return decks[i];
   }
+  function setDeckLevel(i, level, smooth) {
+    level = Math.max(0, Math.min(1, level));
+    if (!ROUTED) { decks[i].volume = level; return; }
+    var g = deckGains[i].gain;
+    if (smooth) g.setTargetAtTime(level, ctx.currentTime, smooth);
+    else { g.cancelScheduledValues(ctx.currentTime); g.setValueAtTime(level, ctx.currentTime); }
+  }
+  function deckLevel(i) { return ROUTED ? deckGains[i].gain.value : decks[i].volume; }
   function pick(avoid) {
     var choices = TRACKS.filter(function (t) { return t !== avoid && !failed[t.id]; });
     if (!choices.length) choices = TRACKS.filter(function (t) { return t.synth; });
@@ -189,7 +210,7 @@
       var el = deck(v.deck);
       el.onerror = function () { failed[t.id] = true; if (cur === v || nxt === v) skip(v); };
       el.src = t.src;
-      el.volume = 0;
+      setDeckLevel(v.deck, 0);
       var p = el.play();
       if (p && p.catch) p.catch(function () { /* blocked until the next press */ });
     }
@@ -209,7 +230,7 @@
     if (v.deck < 0) {
       chords.out.gain.setTargetAtTime(CHORDS_MAX * musicLevel() * v.fade, ctx.currentTime, 0.05);
     } else {
-      decks[v.deck].volume = Math.max(0, Math.min(1, musicLevel() * v.fade));
+      setDeckLevel(v.deck, musicLevel() * v.fade, 0.03);
     }
     return k >= 1;
   }
@@ -259,11 +280,11 @@
     gone.forEach(function (v) {
       if (!v) return;
       if (v.deck < 0) { stopChords(); return; }
-      var el = decks[v.deck], start = el.volume, t0 = performance.now();
+      var i = v.deck, el = decks[i], start = deckLevel(i), t0 = performance.now();
       var fader = setInterval(function () {
-        if (cur && cur.deck >= 0 && decks[cur.deck] === el) { clearInterval(fader); return; }
+        if (cur && cur.deck === i) { clearInterval(fader); return; }
         var k = Math.min(1, (performance.now() - t0) / 500);
-        el.volume = start * (1 - k);
+        setDeckLevel(i, start * (1 - k));
         if (k >= 1) { clearInterval(fader); el.pause(); }
       }, 40);
     });
@@ -394,7 +415,8 @@
         on: on, armed: armed, context: ctx ? ctx.state : 'none',
         track: cur ? cur.track.id : null, next: nxt ? nxt.track.id : null,
         music: !!cur && (cur.deck < 0 ? !!(chords && chords.scheduler) : !!el && !el.paused),
-        musicTime: el ? +el.currentTime.toFixed(2) : 0, volume: el ? +el.volume.toFixed(2) : (cur && chords ? +chords.out.gain.value.toFixed(3) : 0),
+        musicTime: el ? +el.currentTime.toFixed(2) : 0, musicDuration: el && isFinite(el.duration) ? +el.duration.toFixed(1) : 0, routed: ROUTED,
+        volume: el ? +deckLevel(cur.deck).toFixed(2) : (cur && chords ? +chords.out.gain.value.toFixed(3) : 0),
         levels: { master: vol.master, music: vol.music, effects: vol.effects }, effects: +effectsLevel().toFixed(3),
         decksLoaded: decks.filter(function (d) { return d && d.getAttribute('src'); }).length,
         pops: popsPlayed, live: popsLive
