@@ -1,0 +1,52 @@
+Music in this folder
+====================
+
+The Sound panel picks a track at random from these four files and from
+"Ambient chords", which is generated in the browser by js/sound.js (no
+recording, nothing to license). All files retrieved 27 November 2026.
+
+Changes made to every file: leading and trailing silence trimmed, the level
+matched to about -24 LUFS so the tracks sit quietly under the page and at the
+same loudness as each other, and re-encoded to MP3 at 80-112 kbps (2.4-2.9 MB).
+
+Credit, as shown in the site footer and on the "coming soon" page:
+
+  Music: "Study And Relax", "Cool Vibes" and "Bossa Antigua" by Kevin MacLeod
+  (incompetech.com), licensed under CC BY 4.0, trimmed and made quieter.
+  "Morning Coffee" by HoliznaCC0 is public domain (CC0).
+
+
+study-and-relax.mp3
+  Title     Study And Relax
+  Composer  Kevin MacLeod (incompetech.com)
+  Source    https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1900030
+            https://incompetech.com/music/royalty-free/mp3-royaltyfree/Study%20And%20Relax.mp3
+  Licence   Creative Commons Attribution 4.0 International (CC BY 4.0)
+            https://creativecommons.org/licenses/by/4.0/
+
+cool-vibes.mp3
+  Title     Cool Vibes
+  Composer  Kevin MacLeod (incompetech.com)
+  Source    https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1100863
+            https://incompetech.com/music/royalty-free/mp3-royaltyfree/Cool%20Vibes.mp3
+  Licence   Creative Commons Attribution 4.0 International (CC BY 4.0)
+            https://creativecommons.org/licenses/by/4.0/
+
+bossa-antigua.mp3
+  Title     Bossa Antigua
+  Composer  Kevin MacLeod (incompetech.com)
+  Source    https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1700069
+            https://incompetech.com/music/royalty-free/mp3-royaltyfree/Bossa%20Antigua.mp3
+  Licence   Creative Commons Attribution 4.0 International (CC BY 4.0)
+            https://creativecommons.org/licenses/by/4.0/
+
+morning-coffee.mp3
+  Title     Morning Coffee
+  Artist    HoliznaCC0
+  Source    https://freemusicarchive.org/music/holiznacc0/lo-fi-and-chill/morning-coffee/
+  Licence   CC0 1.0 Universal (public domain dedication); no credit required
+            https://creativecommons.org/publicdomain/zero/1.0/
+
+CC BY 4.0 lets anyone share and adapt the music, including for commercial
+use, as long as the composer is credited, the licence is linked and changes
+are indicated. Kevin MacLeod and HoliznaCC0 do not endorse Apporatory.
