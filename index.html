@@ -6,18 +6,25 @@
 <title>Apporatory · Your maths and science lab, from Grade 1 to college</title>
 <meta name="description" content="Apporatory is a place to explore maths and science, from your very first sums to college-level ideas.">
 <meta name="color-scheme" content="light dark">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23f6f1ea'/%3E%3Cpath d='M13 6h6M14 6.5v7L8.5 23a1.6 1.6 0 0 0 1.4 2.4h12.2a1.6 1.6 0 0 0 1.4-2.4L18 13.5v-7' fill='none' stroke='%239c3f2a' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%231c1a18'/%3E%3Cpath d='M13 6h6M14 6.5v7L8.5 23.5h15L18 13.5v-7' fill='none' stroke='%23ff8a5c' stroke-width='2.6' stroke-linejoin='miter'/%3E%3C/svg%3E">
 <script src="js/boot.js"></script>
+<link rel="preload" href="fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/atkinson-hyperlegible-next-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="vendor/scrollcraft.css">
+<link rel="stylesheet" href="css/themes.css">
 <link rel="stylesheet" href="css/site.css">
-<noscript><style>[data-sc-cue], [data-sc-in], [data-sc-stagger] > * { opacity: 1 !important; transform: none !important; } .pause, .bar__tools { display: none !important; }</style></noscript>
+<noscript><style>[data-sc-cue], [data-sc-in], [data-sc-stagger] > * { opacity: 1 !important; transform: none !important; } [data-motion-pause], .bar__tools { display: none !important; }</style></noscript>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
+<div class="grid-bg" aria-hidden="true"><i class="grid-bg__b"></i><i class="grid-bg__a"></i></div>
 
 <header class="bar">
   <nav class="bar__tools" aria-label="Settings and account">
+    <button type="button" class="tool tool--icon pause-icons" data-motion-pause aria-pressed="false" aria-label="Pause motion">
+      <svg class="icon icon--pause" aria-hidden="true"><use href="img/icons.svg#i-pause"/></svg>
+      <svg class="icon icon--play" aria-hidden="true"><use href="img/icons.svg#i-play"/></svg>
+    </button>
     <button type="button" class="tool" id="theme-toggle" aria-expanded="false" aria-controls="theme-panel">
       <svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-palette"/></svg><span class="tool__label">Theme</span>
     </button>
@@ -32,7 +39,7 @@
         <input type="radio" name="theme" value="light">
         <span class="swatch" data-theme="light" aria-hidden="true"><span class="swatch__text"><i></i><i></i></span><span class="swatch__btn"></span><span class="swatch__dots"><b></b><b></b><b></b><b></b></span></span>
         <span class="theme-opt__name">Light<svg class="icon theme-opt__tick" aria-hidden="true"><use href="img/icons.svg#i-check"/></svg></span>
-        <span class="theme-opt__desc">Bright and friendly</span>
+        <span class="theme-opt__desc">Bright, with clashing reds and blues</span>
       </label>
       <label class="theme-opt">
         <input type="radio" name="theme" value="dark">
@@ -62,11 +69,11 @@
         <input type="radio" name="theme" value="high-contrast">
         <span class="swatch" data-theme="high-contrast" aria-hidden="true"><span class="swatch__text"><i></i><i></i></span><span class="swatch__btn"></span><span class="swatch__dots"><b></b><b></b><b></b><b></b></span></span>
         <span class="theme-opt__name">High contrast<svg class="icon theme-opt__tick" aria-hidden="true"><use href="img/icons.svg#i-check"/></svg></span>
-        <span class="theme-opt__desc">Strongest contrast, thicker outlines</span>
+        <span class="theme-opt__desc">Strongest contrast, thickest outlines</span>
       </label>
     </fieldset>
     <div class="motion-row">
-      <span class="motion-row__label"><strong id="motion-label">Reduce motion</strong><span id="motion-desc">Stops the moving symbols and the sliding list of jobs.</span></span>
+      <span class="motion-row__label"><strong id="motion-label">Reduce motion</strong><span id="motion-desc">Stops the moving grid, the symbols, the sliding jobs and the click rings.</span></span>
       <button type="button" class="switch" id="motion-switch" role="switch" aria-checked="false" aria-labelledby="motion-label" aria-describedby="motion-desc"></button>
     </div>
     <button type="button" class="theme-panel__done" data-close-themes>Done</button>
@@ -78,7 +85,7 @@
   <section class="hero" data-sc-act="pin" data-sc-span="1.3" aria-labelledby="hero-title">
     <div class="hero__stage" data-sc-stage data-sc-verify-state="">
       <div class="hero__inner">
-        <div class="hero__copy">
+        <div class="hero__copy panel">
           <h1 class="wordmark" id="hero-title"><span class="visually-hidden">Apporatory</span><span class="wordmark__letters" aria-hidden="true"><span style="--i:0">A</span><span style="--i:1">p</span><span style="--i:2">p</span><span style="--i:3">o</span><span style="--i:4">r</span><span style="--i:5">a</span><span style="--i:6">t</span><span style="--i:7">o</span><span style="--i:8">r</span><span style="--i:9">y</span></span></h1>
           <p class="hero__tagline">Your maths and science lab, from Grade 1 to college.</p>
           <p class="hero__cta"><a class="button button--primary" href="coming-soon.html?page=explore">Start exploring<svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-arrow"/></svg></a></p>
@@ -87,7 +94,7 @@
           <div class="hero__morph"><canvas class="morph" width="600" height="600"></canvas></div>
         </div>
       </div>
-      <button type="button" class="pause pause--hero" data-morph-pause aria-pressed="false" aria-label="Pause background">
+      <button type="button" class="pause pause--hero pause-icons" data-motion-pause aria-pressed="false" aria-label="Pause motion">
         <svg class="icon icon--pause" aria-hidden="true"><use href="img/icons.svg#i-pause"/></svg>
         <svg class="icon icon--play" aria-hidden="true"><use href="img/icons.svg#i-play"/></svg>
       </button>
@@ -96,14 +103,16 @@
 
   <section class="sc-section about" data-sc-act="flow" aria-labelledby="about-title">
     <div class="sc-wrap">
-      <h2 class="section-title" id="about-title">What is Apporatory?</h2>
-      <p class="statement" data-sc-cue="0.08" data-sc-kinetic="lines">Apporatory is a place to explore maths and science, from your very first sums to college-level ideas.</p>
+      <div class="panel">
+        <h2 class="section-title" id="about-title">What is Apporatory?</h2>
+        <p class="statement" data-sc-cue="0.08" data-sc-kinetic="lines">Apporatory is a place to explore maths and science, from your very first sums to college-level ideas.</p>
+      </div>
     </div>
   </section>
 
   <section class="sc-section helps" data-sc-act="flow" aria-labelledby="helps-title">
     <div class="sc-wrap">
-      <div class="helps__band" data-sc-reveal="up" data-sc-reveal-at="0.04 0.34">
+      <div class="panel" data-sc-reveal="up" data-sc-reveal-at="0.04 0.34">
         <h2 class="section-title" id="helps-title">How it helps</h2>
         <div class="helps__pair">
           <p class="helps__line"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-learner"/></svg><span>Anyone can learn at their own level, at school or at home.</span></p>
@@ -114,22 +123,26 @@
   </section>
 
   <section class="sc-section goals" data-sc-act="flow" aria-labelledby="goals-title">
-    <div class="sc-wrap goals__grid">
-      <h2 class="sc-display sc-display--md goals__title" id="goals-title">Our goals</h2>
-      <ul class="goals__list" data-sc-in data-sc-stagger="70">
-        <li><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-spark"/></svg><span>Make maths and science exciting, not scary.</span></li>
-        <li><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-stairs"/></svg><span>Cover every grade from 1 to 12, and keep going into college.</span></li>
-        <li><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-steps"/></svg><span>Explain big ideas in short, clear steps.</span></li>
-        <li><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-eye"/></svg><span>Let everyone learn comfortably, whatever their eyesight, device or pace.</span></li>
-        <li><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-together"/></svg><span>Help students and teachers learn together.</span></li>
-      </ul>
+    <div class="sc-wrap">
+      <div class="panel goals__grid">
+        <h2 class="goals__title" id="goals-title">Our goals</h2>
+        <ul class="goals__list" data-sc-in data-sc-stagger="70">
+          <li><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-spark"/></svg><span>Make maths and science exciting, not scary.</span></li>
+          <li><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-stairs"/></svg><span>Cover every grade from 1 to 12, and keep going into college.</span></li>
+          <li><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-steps"/></svg><span>Explain big ideas in short, clear steps.</span></li>
+          <li><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-eye"/></svg><span>Let everyone learn comfortably, whatever their eyesight, device or pace.</span></li>
+          <li><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-together"/></svg><span>Help students and teachers learn together.</span></li>
+        </ul>
+      </div>
     </div>
   </section>
 
   <section class="sc-section invite" data-sc-act="flow" aria-labelledby="invite-title">
-    <div class="sc-wrap invite__wrap">
-      <h2 class="sc-display sc-display--lg invite__title" id="invite-title" data-sc-cue="0.1" data-sc-kinetic="words">Ready to explore?</h2>
-      <p data-sc-in><a class="button button--primary button--large" href="coming-soon.html?page=explore">Start exploring<svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-arrow"/></svg></a></p>
+    <div class="sc-wrap">
+      <div class="panel">
+        <h2 class="invite__title" id="invite-title" data-sc-cue="0.1" data-sc-kinetic="words">Ready to explore?</h2>
+        <p data-sc-in><a class="button button--primary button--large" href="coming-soon.html?page=explore">Start exploring<svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-arrow"/></svg></a></p>
+      </div>
     </div>
   </section>
 
@@ -138,47 +151,49 @@
       <div class="sc-wrap">
         <h2 class="roles__title" id="roles-title"><span data-sc-cue="0 1 0 0">Today’s explorers.</span> <span class="roles__tomorrow" data-sc-cue="0.18">Tomorrow’s…</span></h2>
       </div>
-      <div class="roles__viewport">
-        <div class="roles__track">
-          <ul class="roles__list" aria-label="What explorers can become">
-            <li class="role" data-field="learning"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-pencil"/></svg>Students</li>
-            <li class="role" data-field="physics"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-rocket"/></svg>Astronauts</li>
-            <li class="role" data-field="maths"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-sigma"/></svg>Mathematicians</li>
-            <li class="role" data-field="biology"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-heartbeat"/></svg>Doctors</li>
-            <li class="role" data-field="maths"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-key"/></svg>Cryptographers</li>
-            <li class="role" data-field="chemistry"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-flask"/></svg>Chemists</li>
-            <li class="role" data-field="learning"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-book"/></svg>Teachers</li>
-            <li class="role" data-field="biology"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-fish"/></svg>Marine Biologists</li>
-            <li class="role" data-field="physics"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-gear"/></svg>Engineers</li>
-            <li class="role" data-field="chemistry"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-pill"/></svg>Pharmacists</li>
-            <li class="role" data-field="learning"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-cap"/></svg>College Students</li>
-            <li class="role" data-field="maths"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-scatter"/></svg>Data Scientists</li>
-            <li class="role" data-field="biology"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-paw"/></svg>Vets</li>
-            <li class="role" data-field="physics"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-telescope"/></svg>Astronomers</li>
-            <li class="role" data-field="chemistry"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-fingerprint"/></svg>Forensic Scientists</li>
-            <li class="role" data-field="learning"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-board"/></svg>Professors</li>
-            <li class="role" data-field="maths"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-code"/></svg>Programmers</li>
-            <li class="role" data-field="biology"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-dna"/></svg>Geneticists</li>
-            <li class="role" data-field="physics"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-cloud"/></svg>Meteorologists</li>
-            <li class="role" data-field="chemistry"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-cube"/></svg>Materials Scientists</li>
-            <li class="role" data-field="learning"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-search"/></svg>Researchers</li>
-            <li class="role" data-field="maths"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-bars"/></svg>Statisticians</li>
-            <li class="role" data-field="biology"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-cross"/></svg>Nurses</li>
-            <li class="role" data-field="physics"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-robot"/></svg>Roboticists</li>
-            <li class="role" data-field="chemistry"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-apple"/></svg>Food Scientists</li>
-            <li class="role" data-field="maths"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-compass"/></svg>Architects</li>
-            <li class="role" data-field="biology"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-bird"/></svg>Zoologists</li>
-            <li class="role" data-field="physics"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-atom"/></svg>Physicists</li>
-            <li class="role" data-field="maths"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-trend"/></svg>Economists</li>
-            <li class="role" data-field="biology"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-tooth"/></svg>Dentists</li>
-            <li class="role" data-field="maths"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-shield"/></svg>Actuaries</li>
-            <li class="role" data-field="biology"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-leaf"/></svg>Biologists</li>
-            <li class="role" data-field="biology"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-tree"/></svg>Ecologists</li>
-          </ul>
+      <div class="roles__band">
+        <div class="roles__viewport">
+          <div class="roles__track">
+            <ul class="roles__list" aria-label="What explorers can become">
+              <li class="role" data-field="learning"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-pencil"/></svg>Students</li>
+              <li class="role" data-field="physics"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-rocket"/></svg>Astronauts</li>
+              <li class="role" data-field="maths"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-sigma"/></svg>Mathematicians</li>
+              <li class="role" data-field="biology"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-heartbeat"/></svg>Doctors</li>
+              <li class="role" data-field="maths"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-key"/></svg>Cryptographers</li>
+              <li class="role" data-field="chemistry"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-flask"/></svg>Chemists</li>
+              <li class="role" data-field="learning"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-book"/></svg>Teachers</li>
+              <li class="role" data-field="biology"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-fish"/></svg>Marine Biologists</li>
+              <li class="role" data-field="physics"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-gear"/></svg>Engineers</li>
+              <li class="role" data-field="chemistry"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-pill"/></svg>Pharmacists</li>
+              <li class="role" data-field="learning"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-cap"/></svg>College Students</li>
+              <li class="role" data-field="maths"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-scatter"/></svg>Data Scientists</li>
+              <li class="role" data-field="biology"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-paw"/></svg>Vets</li>
+              <li class="role" data-field="physics"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-telescope"/></svg>Astronomers</li>
+              <li class="role" data-field="chemistry"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-fingerprint"/></svg>Forensic Scientists</li>
+              <li class="role" data-field="learning"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-board"/></svg>Professors</li>
+              <li class="role" data-field="maths"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-code"/></svg>Programmers</li>
+              <li class="role" data-field="biology"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-dna"/></svg>Geneticists</li>
+              <li class="role" data-field="physics"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-cloud"/></svg>Meteorologists</li>
+              <li class="role" data-field="chemistry"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-cube"/></svg>Materials Scientists</li>
+              <li class="role" data-field="learning"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-search"/></svg>Researchers</li>
+              <li class="role" data-field="maths"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-bars"/></svg>Statisticians</li>
+              <li class="role" data-field="biology"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-cross"/></svg>Nurses</li>
+              <li class="role" data-field="physics"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-robot"/></svg>Roboticists</li>
+              <li class="role" data-field="chemistry"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-apple"/></svg>Food Scientists</li>
+              <li class="role" data-field="maths"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-compass"/></svg>Architects</li>
+              <li class="role" data-field="biology"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-bird"/></svg>Zoologists</li>
+              <li class="role" data-field="physics"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-atom"/></svg>Physicists</li>
+              <li class="role" data-field="maths"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-trend"/></svg>Economists</li>
+              <li class="role" data-field="biology"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-tooth"/></svg>Dentists</li>
+              <li class="role" data-field="maths"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-shield"/></svg>Actuaries</li>
+              <li class="role" data-field="biology"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-leaf"/></svg>Biologists</li>
+              <li class="role" data-field="biology"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-tree"/></svg>Ecologists</li>
+            </ul>
+          </div>
         </div>
       </div>
       <div class="sc-wrap roles__controls">
-        <button type="button" class="pause" data-roles-pause aria-pressed="false" aria-label="Pause the list of jobs">
+        <button type="button" class="pause pause-icons" data-motion-pause aria-pressed="false" aria-label="Pause motion">
           <svg class="icon icon--pause" aria-hidden="true"><use href="img/icons.svg#i-pause"/></svg>
           <svg class="icon icon--play" aria-hidden="true"><use href="img/icons.svg#i-play"/></svg>
         </button>

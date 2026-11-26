@@ -1,6 +1,6 @@
 /* Apporatory page behaviour: the scroll engine, the theme switcher with its
-   whole-page regrade, the Reduce motion setting, the roles strip and the
-   Coming soon page. */
+   whole-page regrade, Reduce motion and the pause controls, the roles strip,
+   the click shockwave and the Coming soon page. */
 (function () {
   'use strict';
 
@@ -21,21 +21,24 @@
 
   if (window.ScrollCraft) window.apporatoryScroll = window.ScrollCraft.mount(document.body);
 
-  // ------------------------------------------------------------ wordmark --
   var word = document.querySelector('.wordmark');
   if (word && !motionOff()) word.classList.add('is-popping');
 
-  // On narrow screens the symbol plane is anchored to the bottom of the name.
-  var heroInner = document.querySelector('.hero__inner');
-  var letters = document.querySelector('.wordmark__letters');
-  var placePlane = function () {
-    if (!heroInner || !letters) return;
-    var bottom = letters.getBoundingClientRect().bottom - heroInner.getBoundingClientRect().top;
-    heroInner.style.setProperty('--word-bottom', Math.round(bottom) + 'px');
-  };
-  placePlane();
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(placePlane);
-  window.addEventListener('resize', placePlane);
+  // --------------------------------------------------------- pause motion --
+  // Every pause button controls the same thing: the grid, the symbols and the
+  // jobs strip all stop together.
+  var pauseButtons = Array.prototype.slice.call(document.querySelectorAll('[data-motion-pause]'));
+  function setPaused(on) {
+    root.classList.toggle('is-motion-paused', on);
+    pauseButtons.forEach(function (b) { b.setAttribute('aria-pressed', on ? 'true' : 'false'); });
+    emit('apporatory:pause', { paused: on });
+  }
+  pauseButtons.forEach(function (b) {
+    b.addEventListener('click', function () { setPaused(!root.classList.contains('is-motion-paused')); });
+  });
+  var syncHidden = function () { root.classList.toggle('is-hidden', document.hidden); };
+  document.addEventListener('visibilitychange', syncHidden);
+  syncHidden();
 
   // -------------------------------------------------------- theme panel --
   var toggle = document.getElementById('theme-toggle');
@@ -114,9 +117,7 @@
     radios.forEach(function (r) {
       r.addEventListener('change', function () { setTheme(r.value, r.closest('.theme-opt'), true); });
     });
-    if (motionSwitch) {
-      motionSwitch.addEventListener('click', function () { setMotion(!motionOff(), true); });
-    }
+    if (motionSwitch) motionSwitch.addEventListener('click', function () { setMotion(!motionOff(), true); });
     var done = panel.querySelector('[data-close-themes]');
     if (done) done.addEventListener('click', function () { closePanel(true); });
     panel.addEventListener('focusout', function (e) {
@@ -147,7 +148,6 @@
     var track = roles.querySelector('.roles__track');
     var list = roles.querySelector('.roles__list');
     var viewport = roles.querySelector('.roles__viewport');
-    var rolesPause = roles.querySelector('[data-roles-pause]');
     var echo = function (source) {
       var c = source.cloneNode(true);
       c.setAttribute('aria-hidden', 'true');
@@ -181,13 +181,9 @@
     var paceTimer = 0;
     window.addEventListener('resize', function () { clearTimeout(paceTimer); paceTimer = setTimeout(pace, 200); });
 
-    var setPaused = function (on) {
-      roles.classList.toggle('is-paused', on);
-      if (rolesPause) rolesPause.setAttribute('aria-pressed', on ? 'true' : 'false');
-    };
-    if (rolesPause) rolesPause.addEventListener('click', function () { setPaused(!roles.classList.contains('is-paused')); });
+    // A tap holds the strip still for reading; another tap lets it go.
     viewport.addEventListener('pointerup', function (e) {
-      if (e.pointerType === 'touch' || e.pointerType === 'pen') setPaused(!roles.classList.contains('is-paused'));
+      if (e.pointerType === 'touch' || e.pointerType === 'pen') roles.classList.toggle('is-paused');
     });
     if ('IntersectionObserver' in window) {
       new IntersectionObserver(function (entries) {
@@ -195,6 +191,29 @@
       }).observe(viewport);
     }
   }
+
+  // ----------------------------------------------------- click shockwave --
+  var INTERACTIVE = 'a, button, input, select, textarea, label, summary, [role="button"], [role="switch"], [tabindex], .theme-panel, .bar__tools, .roles__viewport';
+  var rings = [];
+  document.addEventListener('click', function (e) {
+    if (motionOff() || e.detail === 0) return;
+    if (e.target.closest && e.target.closest(INTERACTIVE)) return;
+    var sel = window.getSelection && window.getSelection();
+    if (sel && !sel.isCollapsed) return;
+    var shock = document.createElement('span');
+    shock.className = 'shock';
+    shock.setAttribute('aria-hidden', 'true');
+    shock.style.transform = 'translate(' + e.clientX + 'px, ' + e.clientY + 'px)';
+    shock.innerHTML = '<i></i><i></i><i></i>';
+    document.body.appendChild(shock);
+    rings.push(shock);
+    if (rings.length > 8) rings.shift().remove();
+    setTimeout(function () {
+      shock.remove();
+      var i = rings.indexOf(shock);
+      if (i >= 0) rings.splice(i, 1);
+    }, 760);
+  });
 
   // ------------------------------------------- scroll states for the harness --
   // The hero's movement is CSS driven from --sc-p, so publish what it paints.
@@ -207,7 +226,7 @@
         var act = stage.closest('[data-sc-act]');
         var p = act ? parseFloat(act.style.getPropertyValue('--sc-p')) || 0 : 0;
         var still = motionOff() || reduceMQ.matches;
-        var value = still ? 'still' : 'plane ' + (1 - p * 0.12).toFixed(2) + ' word ' + (1 - p * 0.06).toFixed(3);
+        var value = still ? 'still' : 'plane ' + (1 - p * 0.12).toFixed(2) + ' copy ' + (p * -3).toFixed(2);
         if (stage.getAttribute('data-sc-verify-state') !== value) stage.setAttribute('data-sc-verify-state', value);
       });
     };

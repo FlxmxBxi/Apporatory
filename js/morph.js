@@ -10,7 +10,6 @@
   if (!canvas || !canvas.getContext) return;
   var ctx = canvas.getContext('2d');
   var root = document.documentElement;
-  var pauseBtn = document.querySelector('[data-morph-pause]');
 
   var HOLD = 4000;
   var MORPH = 1500;
@@ -200,7 +199,7 @@
     var size = Math.min(W, H);
     cx = W / 2; cy = H / 2;
     scale = size * 0.44;
-    radius = Math.max(1.35, Math.min(2.7, size / 220));
+    radius = Math.max(1.4, Math.min(2.6, size / 230)); // half the side of each square dot
     var count = size >= 470 ? 860 : size >= 340 ? 660 : 480;
     if (count !== n) {
       n = count;
@@ -240,7 +239,7 @@
   function now() { return running ? base + (performance.now() - runStart) : base; }
 
   var idx = 0, phase = 'gather', phaseStart = 0, wave = null;
-  var userPaused = false, onScreen = true, tabVisible = !document.hidden;
+  var userPaused = root.classList.contains('is-motion-paused'), onScreen = true, tabVisible = !document.hidden;
   var raf = 0, timer = 0, frames = 0;
 
   function motionOn() { return root.getAttribute('data-motion') !== 'off'; }
@@ -306,8 +305,7 @@
         for (i = 0; i < n; i++) {
           var f = Math.min(1, Math.max(0, (w - (P[2 * i] / W) * 0.5) / 0.5));
           if (Math.round(f * 5) !== b) continue;
-          ctx.moveTo(P[2 * i] + radius, P[2 * i + 1]);
-          ctx.arc(P[2 * i], P[2 * i + 1], radius, 0, TAU);
+          ctx.rect(P[2 * i] - radius, P[2 * i + 1] - radius, radius * 2, radius * 2);
         }
         ctx.fill();
       }
@@ -315,8 +313,7 @@
       ctx.beginPath();
       ctx.fillStyle = css(current);
       for (i = 0; i < n; i++) {
-        ctx.moveTo(P[2 * i] + radius, P[2 * i + 1]);
-        ctx.arc(P[2 * i], P[2 * i + 1], radius, 0, TAU);
+        ctx.rect(P[2 * i] - radius, P[2 * i + 1] - radius, radius * 2, radius * 2);
       }
       ctx.fill();
     }
@@ -390,14 +387,11 @@
     if (!motionOn()) { phase = 'still'; draw(); report(); }
     else { phase = 'gather'; phaseStart = 0; draw(); update(); }
 
-    if (pauseBtn) {
-      pauseBtn.addEventListener('click', function () {
-        userPaused = !userPaused;
-        pauseBtn.setAttribute('aria-pressed', userPaused ? 'true' : 'false');
-        if (userPaused) { setRunning(false); settle(); report(); }
-        else update();
-      });
-    }
+    document.addEventListener('apporatory:pause', function (e) {
+      userPaused = !!(e.detail && e.detail.paused);
+      if (userPaused) { setRunning(false); settle(); report(); }
+      else update();
+    });
 
     if ('IntersectionObserver' in window) {
       new IntersectionObserver(function (entries) {

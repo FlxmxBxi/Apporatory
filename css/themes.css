@@ -1,0 +1,267 @@
+/* Apporatory themes. Each theme has three accents that clash on purpose, two
+   grid-line colours for the shifting background, and an inverted band. Every
+   text pair was checked: reading text 7:1, labels, links, accents and subject
+   text 4.5:1, borders and icons 3:1, and 7:1 for all text in High contrast.
+   Colour-blind themes clash only within their safe pairs; Greyscale clashes
+   through contrast and pattern. */
+
+:root,
+[data-theme="light"] {
+  color-scheme: light;
+  --bg: #f6f1ea;
+  --surface: #e9e0d4;
+  --line: rgb(28 26 24 / 0.16);
+  --line-strong: #1c1a18;
+  --ink: #1c1a18;
+  --ink-2: #37332f;
+  --muted: #57514a;
+  --accent: #ad3218;          /* vermilion */
+  --accent-ink: #ffffff;
+  --accent-2: #1f3fb8;        /* cobalt */
+  --accent-3: #a3175f;        /* magenta */
+  --band-bg: #1c1a18;
+  --band-ink: #f6f1ea;
+  --band-accent: #ff8a5c;
+  --band-learning: #ff8a5c;
+  --band-maths: #6aa6ff;
+  --band-physics: #f2b84b;
+  --band-chemistry: #58cef8;
+  --band-biology: #a6e599;
+  --on-fill: #1c1a18;
+  --maths-fill: #4e90d2;      --maths: #1161a5;
+  --physics-fill: #c5953b;    --physics: #7a5400;
+  --chemistry-fill: #58cef8;  --chemistry: #006480;
+  --biology-fill: #a6e599;    --biology: #2b6a1c;
+  --morph-maths: var(--maths);
+  --morph-physics: var(--physics);
+  --morph-chemistry: var(--chemistry);
+  --morph-biology: var(--biology);
+  --dot-alpha: 0.55;
+  --grid-a: rgb(31 63 184 / 0.17);   /* the light, fast grid: cobalt */
+  --grid-b: rgb(173 50 24 / 0.13);   /* the slow grid underneath: vermilion */
+  --border-w: 2px;
+  --focus-w: 3px;
+  --focus-c: var(--accent-2);
+  --underline-w: 2px;
+  --shadow-hsl: 30 10% 10%;
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #161514;
+  --surface: #25231f;
+  --line: rgb(246 241 234 / 0.16);
+  --line-strong: #f6f1ea;
+  --ink: #f6f1ea;
+  --ink-2: #d6ccc0;
+  --muted: #b3a593;
+  --accent: #ff7a4a;          /* sunset */
+  --accent-ink: #161514;
+  --accent-2: #3fd0e6;        /* cyan */
+  --accent-3: #ff63ad;        /* hot pink */
+  --band-bg: #f6f1ea;
+  --band-ink: #161514;
+  --band-accent: #a3175f;
+  --band-learning: #ad3218;
+  --band-maths: #1161a5;
+  --band-physics: #7a5400;
+  --band-chemistry: #006480;
+  --band-biology: #2b6a1c;
+  --on-fill: #161514;
+  --maths-fill: #4e90d2;      --maths: #6db0f5;
+  --physics-fill: #c5953b;    --physics: #dba543;
+  --chemistry-fill: #58cef8;  --chemistry: #2cbde6;
+  --biology-fill: #a6e599;    --biology: #7cc06e;
+  --morph-maths: var(--maths);
+  --morph-physics: var(--physics);
+  --morph-chemistry: var(--chemistry);
+  --morph-biology: var(--biology);
+  --dot-alpha: 0.6;
+  --grid-a: rgb(196 112 255 / 0.36); /* Deltarune's battle purple */
+  --grid-b: rgb(116 52 196 / 0.42);
+  --border-w: 2px;
+  --focus-w: 3px;
+  --focus-c: var(--accent-2);
+  --underline-w: 2px;
+  --shadow-hsl: 30 12% 2%;
+}
+
+/* Protanopia and deuteranopia: the clash is blue against orange. */
+[data-theme="red-green"] {
+  color-scheme: light;
+  --bg: #f6f1ea;
+  --surface: #e9e0d4;
+  --line: rgb(28 26 24 / 0.16);
+  --line-strong: #1c1a18;
+  --ink: #1c1a18;
+  --ink-2: #37332f;
+  --muted: #54504a;
+  --accent: #174a8c;          /* navy */
+  --accent-ink: #ffffff;
+  --accent-2: #984300;        /* burnt orange */
+  --accent-3: #0b5f99;        /* azure */
+  --band-bg: #1c1a18;
+  --band-ink: #f6f1ea;
+  --band-accent: #ffa64d;
+  --band-learning: #ffa64d;
+  --band-maths: #6aa6ff;
+  --band-physics: #ffa64d;
+  --band-chemistry: #9dd4f5;
+  --band-biology: #f2cf5b;
+  --on-fill: #1c1a18;
+  --maths-fill: #5b9be0;      --maths: #1c5aa6;
+  --physics-fill: #f39a45;    --physics: #944600;
+  --chemistry-fill: #9dd4f5;  --chemistry: #0b5c80;
+  --biology-fill: #f2cf5b;    --biology: #6a5300;
+  --morph-maths: var(--maths);
+  --morph-physics: var(--physics);
+  --morph-chemistry: var(--chemistry);
+  --morph-biology: var(--biology);
+  --dot-alpha: 0.6;
+  --grid-a: rgb(23 74 140 / 0.17);
+  --grid-b: rgb(242 140 40 / 0.22);
+  --border-w: 2px;
+  --focus-w: 3px;
+  --focus-c: var(--accent);
+  --underline-w: 2px;
+  --shadow-hsl: 30 10% 10%;
+}
+
+/* Tritanopia: the clash is red against teal. */
+[data-theme="blue-yellow"] {
+  color-scheme: light;
+  --bg: #f6f1ea;
+  --surface: #e9e0d4;
+  --line: rgb(28 26 24 / 0.16);
+  --line-strong: #1c1a18;
+  --ink: #1c1a18;
+  --ink-2: #37332f;
+  --muted: #54504a;
+  --accent: #a3262f;          /* crimson */
+  --accent-ink: #ffffff;
+  --accent-2: #006b64;        /* teal */
+  --accent-3: #9c1f5a;        /* raspberry */
+  --band-bg: #1c1a18;
+  --band-ink: #f6f1ea;
+  --band-accent: #ff7a8a;
+  --band-learning: #ff7a8a;
+  --band-maths: #3dd6c9;
+  --band-physics: #f39bb0;
+  --band-chemistry: #a8e6e1;
+  --band-biology: #ff9b6a;
+  --on-fill: #1c1a18;
+  --maths-fill: #3dbdb3;      --maths: #006760;
+  --physics-fill: #f39bb0;    --physics: #9e2350;
+  --chemistry-fill: #a8e6e1;  --chemistry: #0d626b;
+  --biology-fill: #e5793f;    --biology: #96380b;
+  --morph-maths: var(--maths);
+  --morph-physics: var(--physics);
+  --morph-chemistry: var(--chemistry);
+  --morph-biology: var(--biology);
+  --dot-alpha: 0.6;
+  --grid-a: rgb(0 107 100 / 0.2);
+  --grid-b: rgb(163 38 47 / 0.15);
+  --border-w: 2px;
+  --focus-w: 3px;
+  --focus-c: var(--accent-2);
+  --underline-w: 2px;
+  --shadow-hsl: 30 10% 10%;
+}
+
+/* No colour vision: the clash is black against paper, and pattern. */
+[data-theme="greyscale"] {
+  color-scheme: light;
+  --bg: #f6f1ea;
+  --surface: #e9e0d4;
+  --line: rgb(28 26 24 / 0.2);
+  --line-strong: #1c1a18;
+  --ink: #1c1a18;
+  --ink-2: #37332f;
+  --muted: #4a4540;
+  --accent: #1c1a18;
+  --accent-ink: #f6f1ea;
+  --accent-2: #3d3935;
+  --accent-3: #57514a;
+  --band-bg: #1c1a18;
+  --band-ink: #f6f1ea;
+  --band-accent: #d6ccc0;
+  --band-learning: #f6f1ea;
+  --band-maths: #d6ccc0;
+  --band-physics: #b3a593;
+  --band-chemistry: #f6f1ea;
+  --band-biology: #d6ccc0;
+  --on-fill: #1c1a18;
+  --maths-fill: #9c968f;      --maths: #37332f;
+  --physics-fill: #b7b0a8;    --physics: #37332f;
+  --chemistry-fill: #cfc8bf;  --chemistry: #37332f;
+  --biology-fill: #e2dbd2;    --biology: #37332f;
+  --morph-maths: var(--ink);
+  --morph-physics: var(--ink);
+  --morph-chemistry: var(--ink);
+  --morph-biology: var(--ink);
+  --dot-alpha: 0.5;
+  --grid-a: rgb(28 26 24 / 0.15);
+  --grid-b: rgb(28 26 24 / 0.08);
+  --border-w: 2px;
+  --focus-w: 3px;
+  --focus-c: var(--ink);
+  --underline-w: 2px;
+  --shadow-hsl: 30 6% 10%;
+}
+
+/* Low vision: 7:1 for every text colour, the faintest grid, the thickest edges. */
+[data-theme="high-contrast"] {
+  color-scheme: light;
+  --bg: #f6f1ea;
+  --surface: #e9e0d4;
+  --line: rgb(18 16 14 / 0.34);
+  --line-strong: #12100e;
+  --ink: #12100e;
+  --ink-2: #1c1a18;
+  --muted: #2f2b28;
+  --accent: #73271a;
+  --accent-ink: #ffffff;
+  --accent-2: #0b3a8a;
+  --accent-3: #5e1650;
+  --band-bg: #12100e;
+  --band-ink: #f6f1ea;
+  --band-accent: #ffb08f;
+  --band-learning: #ffb08f;
+  --band-maths: #9cc4ef;
+  --band-physics: #e3c27d;
+  --band-chemistry: #9fe0f9;
+  --band-biology: #c6efbd;
+  --on-fill: #12100e;
+  --maths-fill: #9cc4ef;      --maths: #07447a;
+  --physics-fill: #e3c27d;    --physics: #573c00;
+  --chemistry-fill: #9fe0f9;  --chemistry: #00475b;
+  --biology-fill: #c6efbd;    --biology: #1d4713;
+  --morph-maths: var(--ink);
+  --morph-physics: var(--ink);
+  --morph-chemistry: var(--ink);
+  --morph-biology: var(--ink);
+  --dot-alpha: 0.45;
+  --grid-a: rgb(18 16 14 / 0.1);
+  --grid-b: rgb(18 16 14 / 0.06);
+  --border-w: 3px;
+  --focus-w: 4px;
+  --focus-c: var(--ink);
+  --underline-w: 3px;
+  --shadow-hsl: 30 6% 8%;
+}
+
+/* scroll-craft's roles and faces, restated wherever a theme is set so a
+   nested preview resolves its own colours. */
+:root,
+[data-theme] {
+  --sc-canvas: var(--bg);
+  --sc-surface: var(--surface);
+  --sc-ink: var(--ink);
+  --sc-ink-soft: var(--ink-2);
+  --sc-accent: var(--accent);
+  --sc-accent-ink: var(--accent-ink);
+  --sc-hairline: var(--line);
+  --sc-shadow-color: var(--shadow-hsl);
+  --sc-font-display: "Archivo", "Atkinson Hyperlegible Next", system-ui, sans-serif;
+  --sc-font-text: "Atkinson Hyperlegible Next", system-ui, sans-serif;
+}
