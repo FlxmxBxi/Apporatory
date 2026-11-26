@@ -202,6 +202,34 @@
         roles.classList.toggle('is-offscreen', !entries[entries.length - 1].isIntersecting);
       }).observe(viewport);
     }
+
+    // The entrance, scrubbed by scroll. "s" is 0 while the section is below
+    // the screen, 1 when its top reaches the top (the pin begins) and 2 at the
+    // end of the pinned stretch, so the slam lands while the frame holds still.
+    // Each beat eases out hard, so things arrive fast and stop dead.
+    var BEATS = [
+      ['--rs-stripe-1', 0.5, 0.8], ['--rs-stripe-2', 0.55, 0.85], ['--rs-stripe-3', 0.6, 0.9],
+      ['--rs-title', 0.58, 0.9], ['--rs-band', 0.82, 1.06],
+      ['--rs-row-a', 0.92, 1.24], ['--rs-row-b', 0.98, 1.3],
+      ['--rs-slam', 1.14, 1.3], ['--rs-shadow', 1.24, 1.38]
+    ];
+    var storyQueued = false;
+    var story = function () {
+      storyQueued = false;
+      var r = roles.getBoundingClientRect(), vh = window.innerHeight || 1;
+      var s = Math.min(1, Math.max(0, (vh - r.top) / vh)) + Math.min(1, Math.max(0, -r.top / Math.max(r.height - vh, 1)));
+      BEATS.forEach(function (b) {
+        var t = Math.min(1, Math.max(0, (s - b[1]) / (b[2] - b[1])));
+        roles.style.setProperty(b[0], (1 - Math.pow(1 - t, 3)).toFixed(4));
+      });
+      roles.setAttribute('data-story', s.toFixed(3));
+    };
+    var queueStory = function () {
+      if (!storyQueued) { storyQueued = true; requestAnimationFrame(story); }
+    };
+    window.addEventListener('scroll', queueStory, { passive: true });
+    window.addEventListener('resize', queueStory);
+    story();
   }
 
   // ----------------------------------------------------- click shockwave --

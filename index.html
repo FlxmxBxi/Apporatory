@@ -265,8 +265,10 @@
   <section class="roles" data-sc-act="pin" data-sc-span="1.8" aria-labelledby="roles-title" data-roles>
     <div class="roles__stage" data-sc-stage>
       <div class="sc-wrap">
-        <h2 class="roles__title" id="roles-title"><span data-sc-cue="0 1 0 0">Today’s explorers.</span> <span class="roles__tomorrow" data-sc-cue="0.18">Tomorrow’s…</span></h2>
+        <h2 class="roles__title" id="roles-title"><span class="roles__today">Today’s explorers.</span> <span class="roles__tomorrow">Tomorrow’s…</span></h2>
       </div>
+      <div class="roles__frame">
+      <span class="roles__stripes roles__stripes--top" aria-hidden="true"><i></i><i></i><i></i></span>
       <div class="roles__band">
         <div class="roles__viewport">
           <div class="roles__track">
@@ -307,6 +309,8 @@
             </ul>
           </div>
         </div>
+      </div>
+      <span class="roles__stripes roles__stripes--bottom" aria-hidden="true"><i></i><i></i><i></i></span>
       </div>
       <div class="sc-wrap roles__controls">
         <button type="button" class="pause pause-icons" data-motion-pause aria-pressed="false" aria-label="Pause motion">

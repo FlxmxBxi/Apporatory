@@ -766,9 +766,63 @@ html:not([data-motion="off"]):not(.is-motion-paused) .morph { cursor: pointer; }
   margin-top: 0.3em;
   background: var(--accent);
   color: var(--accent-ink);
-  box-shadow: 7px 7px 0 var(--accent-2);
+  box-shadow: calc(7px * var(--rs-shadow)) calc(7px * var(--rs-shadow)) 0 var(--accent-2);
 }
-[data-theme="greyscale"] .roles__title > .roles__tomorrow { box-shadow: 7px 7px 0 var(--bg), 9px 9px 0 var(--ink); }
+[data-theme="greyscale"] .roles__title > .roles__tomorrow {
+  box-shadow: calc(7px * var(--rs-shadow)) calc(7px * var(--rs-shadow)) 0 var(--bg), calc(9px * var(--rs-shadow)) calc(9px * var(--rs-shadow)) 0 var(--ink);
+}
+
+/* The entrance, scrubbed by scroll (js/site.js publishes each beat from 0 to
+   1, eased): the stripes race in, "Today's explorers." drives in from the
+   left, the band opens like a shutter, the two rows of jobs fly in from
+   opposite sides, then "Tomorrow's..." slams in and drops its shadow. Every
+   beat defaults to 1, the finished frame, which is also what pause, Reduce
+   motion and a page without JavaScript show. */
+.roles {
+  --rs-stripe-1: 1; --rs-stripe-2: 1; --rs-stripe-3: 1;
+  --rs-title: 1; --rs-band: 1; --rs-row-a: 1; --rs-row-b: 1;
+  --rs-slam: 1; --rs-shadow: 1;
+}
+.roles__title > .roles__today {
+  clip-path: inset(0 calc((1 - var(--rs-title)) * 100%) 0 0);
+  translate: calc((var(--rs-title) - 1) * 30vw) 0;
+}
+.roles__title > .roles__tomorrow {
+  opacity: min(1, calc(var(--rs-slam) * 4));
+  translate: calc((1 - var(--rs-slam)) * 40vw) 0;
+  scale: calc(1 + 0.12 * (1 - var(--rs-slam)));
+  transform-origin: 0 50%;
+}
+.roles__frame { min-width: 0; }
+.roles__stripes { display: grid; }
+.roles__stripes i {
+  display: block;
+  height: clamp(0.3rem, 0.55vw, 0.45rem);
+  transform: scaleX(var(--rs-k, 1));
+  transform-origin: 0 50%;
+}
+.roles__stripes--bottom i { transform-origin: 100% 50%; }
+.roles__stripes--top i:nth-child(1),
+.roles__stripes--bottom i:nth-child(3) { background: var(--accent-3); --rs-k: var(--rs-stripe-3); }
+.roles__stripes i:nth-child(2) { background: var(--accent-2); --rs-k: var(--rs-stripe-2); }
+.roles__stripes--top i:nth-child(3),
+.roles__stripes--bottom i:nth-child(1) { background: var(--accent); --rs-k: var(--rs-stripe-1); }
+.roles__band { clip-path: inset(calc((1 - var(--rs-band)) * 50%) 0); }
+.roles__track { translate: calc((1 - var(--rs-row-a)) * 70vw) 0; }
+.roles__track--b { translate: calc((1 - var(--rs-row-b)) * -70vw) 0; }
+html[data-motion="off"] .roles,
+html.is-motion-paused .roles {
+  --rs-stripe-1: 1 !important; --rs-stripe-2: 1 !important; --rs-stripe-3: 1 !important;
+  --rs-title: 1 !important; --rs-band: 1 !important; --rs-row-a: 1 !important; --rs-row-b: 1 !important;
+  --rs-slam: 1 !important; --rs-shadow: 1 !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  .roles {
+    --rs-stripe-1: 1 !important; --rs-stripe-2: 1 !important; --rs-stripe-3: 1 !important;
+    --rs-title: 1 !important; --rs-band: 1 !important; --rs-row-a: 1 !important; --rs-row-b: 1 !important;
+    --rs-slam: 1 !important; --rs-shadow: 1 !important;
+  }
+}
 .roles__band {
   min-width: 0;
   overflow: hidden;
@@ -832,14 +886,6 @@ html.is-hidden .roles__track { animation-play-state: paused; }
 }
 .roles__controls { display: flex; justify-content: flex-end; }
 .roles__controls .pause { position: static; }
-
-@media (prefers-reduced-motion: no-preference) {
-  html:not([data-motion="off"]) .roles__viewport {
-    --grow: clamp(0, calc((var(--sc-p, 0) - 0.08) / 0.34), 1);
-    opacity: calc(0.45 + 0.55 * var(--grow));
-    transform: scale(calc(0.92 + 0.08 * var(--grow)));
-  }
-}
 
 /* Still list: reduced motion, or Apporatory's own Reduce motion setting. */
 html[data-motion="off"] .roles__track { animation: none; width: auto; }
