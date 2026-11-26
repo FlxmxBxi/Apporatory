@@ -171,7 +171,7 @@
 
   // ------------------------------------------------------------ geometry --
   var W = 0, H = 0, dpr = 1, cx = 0, cy = 0, scale = 0, radius = 2, n = 0;
-  var shapes = [], curl, jitter, start, P;
+  var shapes = [], curl, jitter, start, P, ox, oy, vx, vy;
 
   function seedDots() {
     var r = rng(20261126);
@@ -179,6 +179,8 @@
     jitter = new Float32Array(n);
     start = new Float32Array(n * 2);
     P = new Float32Array(n * 2);
+    ox = new Float32Array(n); oy = new Float32Array(n);
+    vx = new Float32Array(n); vy = new Float32Array(n);
     for (var i = 0; i < n; i++) {
       curl[i] = r() * 2 - 1;
       jitter[i] = r();
@@ -235,8 +237,9 @@
   // --------------------------------------------------------------- clock --
   // A virtual clock that only advances while the morph is allowed to run, so a
   // pause, a hidden tab or scrolling away resumes exactly where it left off.
-  var base = 0, runStart = 0, running = false;
-  function now() { return running ? base + (performance.now() - runStart) : base; }
+  // A click burst holds it too, so the symbol never changes while dots are out.
+  var base = 0, runStart = 0, running = false, burst = false, burstLast = 0;
+  function now() { return running && !burst ? base + (performance.now() - runStart) : base; }
 
   var idx = 0, phase = 'gather', phaseStart = 0, wave = null;
   var userPaused = root.classList.contains('is-motion-paused'), onScreen = true, tabVisible = !document.hidden;
@@ -289,6 +292,7 @@
     var vt = now();
     var t = phase === 'gather' ? (vt - phaseStart) / GATHER : phase === 'morph' ? (vt - phaseStart) / MORPH : 1;
     positions(Math.min(1, t));
+    if (burst) for (var j = 0; j < n; j++) { P[2 * j] += ox[j]; P[2 * j + 1] += oy[j]; }
     ctx.clearRect(0, 0, W, H);
     var a = alpha;
     if (phase === 'gather') a *= Math.min(1, t * 1.8);
@@ -335,8 +339,56 @@
     if (wave && vt - wave.at >= WAVE) wave = null;
   }
 
+  // --------------------------------------------------------------- burst --
+  // A click on the symbol blasts the nearby dots outward, strongest close to
+  // the pointer; a damped spring pulls them home and the loop carries on.
+  var SPRING = 60, DAMP = 10.5;
+  function blast(px, py) {
+    if (!n || !running || phase === 'still' || userPaused || !motionOn()) return false;
+    if (!burst) { base = now(); burst = true; }
+    var R = Math.min(W, H) * 0.42;
+    for (var i = 0; i < n; i++) {
+      var dx = P[2 * i] - px, dy = P[2 * i + 1] - py;
+      var d = Math.sqrt(dx * dx + dy * dy) || 0.001;
+      if (d > R) continue;
+      var f = Math.pow(1 - d / R, 1.6);
+      var a = Math.atan2(dy, dx) + (Math.random() - 0.5) * 0.8;
+      var s = (850 + Math.random() * 800) * f;
+      vx[i] += Math.cos(a) * s;
+      vy[i] += Math.sin(a) * s;
+    }
+    burstLast = performance.now();
+    canvas.setAttribute('data-burst', 'active');
+    document.dispatchEvent(new CustomEvent('apporatory:pop', { detail: { kind: 'burst' } }));
+    schedule();
+    return true;
+  }
+  function stepBurst(dt) {
+    var settled = true;
+    for (var i = 0; i < n; i++) {
+      vx[i] += (-SPRING * ox[i] - DAMP * vx[i]) * dt;
+      vy[i] += (-SPRING * oy[i] - DAMP * vy[i]) * dt;
+      ox[i] += vx[i] * dt;
+      oy[i] += vy[i] * dt;
+      if (settled && (ox[i] > 0.3 || ox[i] < -0.3 || oy[i] > 0.3 || oy[i] < -0.3 || vx[i] > 5 || vx[i] < -5 || vy[i] > 5 || vy[i] < -5)) settled = false;
+    }
+    return settled;
+  }
+  function endBurst() {
+    if (!burst) return;
+    for (var i = 0; i < n; i++) { ox[i] = 0; oy[i] = 0; vx[i] = 0; vy[i] = 0; }
+    burst = false;
+    runStart = performance.now(); // the held clock picks up exactly where it stopped
+    canvas.removeAttribute('data-burst');
+  }
+
   function frame() {
     raf = 0;
+    if (burst) {
+      var t = performance.now(), dt = Math.min(1 / 30, (t - burstLast) / 1000);
+      burstLast = t;
+      if (stepBurst(dt)) endBurst();
+    }
     advance();
     draw();
     schedule();
@@ -347,7 +399,7 @@
     clearTimeout(timer); timer = 0;
     report();
     if (!running) return;
-    if (phase === 'gather' || phase === 'morph' || wave) { raf = requestAnimationFrame(frame); return; }
+    if (phase === 'gather' || phase === 'morph' || wave || burst) { raf = requestAnimationFrame(frame); return; }
     if (phase === 'hold') {
       timer = setTimeout(function () { timer = 0; frame(); }, Math.max(0, HOLD - (now() - phaseStart)));
     }
@@ -370,6 +422,7 @@
 
   function applyMotion() {
     if (!motionOn()) {
+      endBurst();
       setRunning(false);
       phase = 'still';
       wave = null;
@@ -389,8 +442,14 @@
 
     document.addEventListener('apporatory:pause', function (e) {
       userPaused = !!(e.detail && e.detail.paused);
-      if (userPaused) { setRunning(false); settle(); report(); }
+      if (userPaused) { endBurst(); setRunning(false); settle(); report(); }
       else update();
+    });
+
+    canvas.addEventListener('click', function (e) {
+      var r = canvas.getBoundingClientRect();
+      if (!r.width || !r.height) return;
+      blast((e.clientX - r.left) * (W / r.width), (e.clientY - r.top) * (H / r.height));
     });
 
     if ('IntersectionObserver' in window) {
@@ -419,7 +478,11 @@
   }
 
   window.ApporatoryMorph = {
-    state: function () { return { phase: phase, symbol: SYMBOLS[phase === 'still' ? STILL : idx].name, running: running, dots: n, frames: frames }; }
+    state: function () {
+      var m = 0;
+      if (burst) for (var i = 0; i < n; i++) m = Math.max(m, Math.abs(ox[i]), Math.abs(oy[i]));
+      return { phase: phase, symbol: SYMBOLS[phase === 'still' ? STILL : idx].name, running: running, dots: n, frames: frames, burst: burst, clock: Math.round(now()), maxOffset: Math.round(m) };
+    }
   };
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);

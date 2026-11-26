@@ -7,7 +7,8 @@ CSS and JavaScript: no framework and no build step.
 
 ## View it locally
 
-Serve the folder over HTTP (the page's scroll engine and icons need it), then open the address it prints:
+Double-click `index.html` to open it straight from disk; everything works that way, sound included. Or serve the folder
+and open the address it prints:
 
 ```bash
 python3 -m http.server 4500
@@ -30,7 +31,12 @@ bold through weight rather than size.
 - **What is Apporatory?**, **How it helps**, **Our goals**, **Ready to explore?**
 - **Today's explorers. Tomorrow's…**: two slow, endless rows of the jobs explorers grow into.
 - **Click shockwave:** clicking or tapping empty space sends out a small diamond ring in the theme's accents.
-- In the top bar: one **pause** control for all motion, a **theme switcher** with six themes and **Reduce motion**.
+- **Symbol burst:** clicking or tapping the hero symbol blasts its dots outward; they spring back and the morph carries
+  on from where it was.
+- **Sound** (off until you turn it on): relaxing jazz, quiet and looping without a seam, and a soft pop with every
+  shockwave and symbol burst.
+- In the top bar: one **pause** control for all motion, a **theme switcher** with six themes and **Reduce motion**,
+  and the **Sound** button.
 
 ## Themes and accessibility
 
@@ -52,6 +58,9 @@ bold through weight rather than size.
   list and clicks make no shockwave. Everything pauses when the tab is hidden.
 - The grid is moved by the graphics chip alone, so the page stays at 60 frames a second with Chrome's CPU slowed 4x.
 - Keyboard: skip link, visible focus everywhere, the theme panel closes with Escape and returns focus.
+- Sound never starts by itself. The Sound button is a toggle (`aria-pressed`) that works from the keyboard; the choice
+  is saved on the device, and when it was left on, the music waits for the first click, tap or key on the next visit
+  (browsers only allow sound after one). The music pauses while the tab is hidden.
 
 ## Files
 
@@ -60,13 +69,19 @@ index.html          the landing page
 coming-soon.html    where Start exploring, Log in and the footer links go for now
 css/themes.css      the six themes and their clashing accents
 css/site.css        page styles, the shifting grid and the click shockwave
+css/fonts.css       the two fonts
+css/fonts-inline.css  the same fonts embedded, used when the page is opened from disk
 js/boot.js          applies the saved or device theme before the page paints
 js/site.js          theme switcher, pause and Reduce motion, roles strip, click shockwave
-js/morph.js         the square-dot symbol morph
-img/icons.svg       line icons, drawn by hand
+js/morph.js         the square-dot symbol morph and its click burst
+js/sound.js         the Sound button, the music and the synthesised pop
+audio/              the jazz loop and its licence (audio/LICENSE.txt)
 fonts/              Atkinson Hyperlegible Next (body) and Archivo (headings)
 vendor/             the scroll-craft engine, unmodified
 ```
+
+The line icons are drawn by hand and sit inline at the top of each page, so they show even when the page is opened
+from disk.
 
 ## Credits
 
@@ -76,5 +91,9 @@ vendor/             the scroll-craft engine, unmodified
   Institute, SIL Open Font License 1.1 (`fonts/OFL.txt`).
 - Heading font: [Archivo](https://github.com/Omnibus-Type/Archivo) by Omnibus-Type, SIL Open Font License 1.1
   (`fonts/Archivo-OFL.txt`).
+- Music: "Study And Relax" by Kevin MacLeod ([incompetech.com](https://incompetech.com)), licensed under
+  [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/); a 32-bar section looped and made quieter. The credit is
+  in the site footer; source and changes are in `audio/LICENSE.txt`.
+- Pop sound: synthesised in the browser, no recording used.
 - Background: inspired by the battle screen in Deltarune; drawn here in CSS, no game assets used.
 - Colours: Light and Dark grew out of AutoEight's palette, adjusted for contrast.

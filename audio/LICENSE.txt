@@ -1,0 +1,30 @@
+Music: study-and-relax-loop.mp3
+===============================
+
+Title     Study And Relax
+Composer  Kevin MacLeod (incompetech.com)
+Source    https://incompetech.com/music/royalty-free/mp3-royaltyfree/Study%20And%20Relax.mp3
+          (track page: search "Study And Relax" on https://incompetech.com/music/royalty-free/music.html)
+Licence   Creative Commons Attribution 4.0 International (CC BY 4.0)
+          https://creativecommons.org/licenses/by/4.0/
+          Full legal code: https://creativecommons.org/licenses/by/4.0/legalcode
+Retrieved 27 November 2026
+
+Credit, as shown in the site footer and on the "coming soon" page:
+
+  Music: "Study And Relax" by Kevin MacLeod (incompetech.com), licensed
+  under CC BY 4.0, looped and made quieter.
+
+Changes made for Apporatory
+---------------------------
+- Kept the 32-bar section from 0:15.743 to 2:02.410 of the original. In the
+  original this section repeats sample for sample, so its end runs straight
+  back into its start; a 1-second crossfade is baked into the head of the file
+  as a safety margin, and the file plays on a loop.
+- Lowered the level by 5.5 dB to about -24 LUFS so it sits quietly under the
+  page, including on phones that ignore volume settings.
+- Re-encoded from the original 320 kbps MP3 to a 160 kbps MP3 (about 2 MB).
+
+The CC BY 4.0 licence lets anyone share and adapt the music, including for
+commercial use, as long as the composer is credited, the licence is linked and
+changes are indicated. Kevin MacLeod does not endorse Apporatory.

@@ -196,7 +196,7 @@
   var INTERACTIVE = 'a, button, input, select, textarea, label, summary, [role="button"], [role="switch"], [tabindex], .theme-panel, .bar__tools, .roles__viewport';
   var rings = [];
   document.addEventListener('click', function (e) {
-    if (motionOff() || e.detail === 0) return;
+    if (motionOff() || root.classList.contains('is-motion-paused') || e.detail === 0) return;
     if (e.target.closest && e.target.closest(INTERACTIVE)) return;
     var sel = window.getSelection && window.getSelection();
     if (sel && !sel.isCollapsed) return;
@@ -206,6 +206,7 @@
     shock.style.transform = 'translate(' + e.clientX + 'px, ' + e.clientY + 'px)';
     shock.innerHTML = '<i></i><i></i><i></i>';
     document.body.appendChild(shock);
+    emit('apporatory:pop', { kind: 'shock' });
     rings.push(shock);
     if (rings.length > 8) rings.shift().remove();
     setTimeout(function () {
