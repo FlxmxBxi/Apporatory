@@ -200,9 +200,9 @@
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     var size = Math.min(W, H);
     cx = W / 2; cy = H / 2;
-    scale = size * 0.44;
-    radius = Math.max(1.4, Math.min(2.6, size / 230)); // half the side of each square dot
-    var count = size >= 470 ? 860 : size >= 340 ? 660 : 480;
+    scale = size * 0.54; // the widest symbol (the atom) reaches 0.88 of its box, so this still fits
+    radius = Math.max(1.4, Math.min(3.2, size / 230)); // half the side of each square dot
+    var count = size >= 600 ? 1150 : size >= 470 ? 1000 : size >= 340 ? 900 : 600;
     if (count !== n) {
       n = count;
       shapes = SYMBOLS.map(function (s) { return sample(s, n); });
