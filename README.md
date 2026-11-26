@@ -19,29 +19,38 @@ a theme or the still version without changing your saved choice.
 
 ## What's on the page
 
+The look is bold and sharp: square corners, heavy edges, hard shadows in colours that clash a little, and type that is
+bold through weight rather than size.
+
+- **A shifting background** behind the whole page, after Deltarune's battle screen: two grids of thin lines drift in
+  opposite diagonals at different speeds, coloured per theme. Text always sits on solid panels.
 - **Hero:** the name, the tagline "Your maths and science lab, from Grade 1 to college." and **Start exploring**.
-  Beside it, maths and science symbols drawn in dots morph into one another: plus, flask, square root, atom, pi and a
-  DNA helix, about 4 seconds on each and 1.5 seconds to change.
+  Beside it, maths and science symbols drawn in square dots morph into one another: plus, flask, square root, atom, pi
+  and a DNA helix, about 4 seconds on each and 1.5 seconds to change.
 - **What is Apporatory?**, **How it helps**, **Our goals**, **Ready to explore?**
-- **Today's explorers. Tomorrow's…**: a slow, endless strip of the jobs explorers grow into.
-- A **theme switcher** in the top bar with six themes and a **Reduce motion** setting.
+- **Today's explorers. Tomorrow's…**: two slow, endless rows of the jobs explorers grow into.
+- **Click shockwave:** clicking or tapping empty space sends out a small diamond ring in the theme's accents.
+- In the top bar: one **pause** control for all motion, a **theme switcher** with six themes and **Reduce motion**.
 
 ## Themes and accessibility
 
-| Theme | Built for |
-|---|---|
-| Light | The default on light devices: warm paper, near-black ink, a copper accent |
-| Dark | The default on dark devices |
-| Red–green friendly | Protanopia and deuteranopia: blues and oranges, navy accent |
-| Blue–yellow friendly | Tritanopia: reds and teals, crimson accent |
-| Greyscale | No colour vision: contrast, icons and patterns |
-| High contrast | Low vision: 7:1 for all text, thicker outlines and focus rings |
+| Theme | Built for | Clashing accents |
+|---|---|---|
+| Light | The default on light devices | Vermilion, cobalt, magenta |
+| Dark | The default on dark devices | Sunset, cyan, hot pink, on a purple grid |
+| Red–green friendly | Protanopia and deuteranopia | Navy and azure against burnt orange |
+| Blue–yellow friendly | Tritanopia | Crimson and raspberry against teal |
+| Greyscale | No colour vision | Black against paper, and stripes |
+| High contrast | Low vision: 7:1 for all text, 3px edges, 4px focus rings | Deep copper, navy, plum |
 
-- Reading text is 7:1 or better in every theme; labels, links and subject colours are at least 4.5:1, borders 3:1.
+- Reading text is 7:1 or better in every theme; labels, links, accents and subject colours are at least 4.5:1,
+  borders 3:1.
 - Nothing relies on colour alone: links are underlined, subjects and jobs always have an icon and a name.
 - A first visit follows the device's light or dark and reduced-motion settings; any choice is saved on the device.
-- Both moving parts have a pause button. With reduced motion (on the device or in Apporatory) the symbols show one
-  still flask and the jobs become a plain list. The symbols stop drawing when the hero is off screen or the tab is hidden.
+- One pause control (top bar, hero and jobs strip) stops the grid, the symbols and the jobs together. With reduced
+  motion (on the device or in Apporatory) all of it stands still, the symbols show one flask, the jobs become a plain
+  list and clicks make no shockwave. Everything pauses when the tab is hidden.
+- The grid is moved by the graphics chip alone, so the page stays at 60 frames a second with Chrome's CPU slowed 4x.
 - Keyboard: skip link, visible focus everywhere, the theme panel closes with Escape and returns focus.
 
 ## Files
@@ -49,12 +58,13 @@ a theme or the still version without changing your saved choice.
 ```
 index.html          the landing page
 coming-soon.html    where Start exploring, Log in and the footer links go for now
-css/site.css        themes and page styles
+css/themes.css      the six themes and their clashing accents
+css/site.css        page styles, the shifting grid and the click shockwave
 js/boot.js          applies the saved or device theme before the page paints
-js/site.js          theme switcher, Reduce motion, roles strip, scroll engine start-up
-js/morph.js         the dot-drawn symbol morph
+js/site.js          theme switcher, pause and Reduce motion, roles strip, click shockwave
+js/morph.js         the square-dot symbol morph
 img/icons.svg       line icons, drawn by hand
-fonts/              Atkinson Hyperlegible Next
+fonts/              Atkinson Hyperlegible Next (body) and Archivo (headings)
 vendor/             the scroll-craft engine, unmodified
 ```
 
@@ -62,6 +72,9 @@ vendor/             the scroll-craft engine, unmodified
 
 - Scroll engine: [scroll-craft](https://github.com/nateherkai/scroll-craft) by Nate Herk, MIT licence
   (`vendor/scrollcraft-LICENSE.txt`).
-- Font: [Atkinson Hyperlegible Next](https://github.com/googlefonts/atkinson-hyperlegible-next) by the Braille
+- Body font: [Atkinson Hyperlegible Next](https://github.com/googlefonts/atkinson-hyperlegible-next) by the Braille
   Institute, SIL Open Font License 1.1 (`fonts/OFL.txt`).
-- Colours: Light and Dark are based on AutoEight's palette, adjusted for contrast.
+- Heading font: [Archivo](https://github.com/Omnibus-Type/Archivo) by Omnibus-Type, SIL Open Font License 1.1
+  (`fonts/Archivo-OFL.txt`).
+- Background: inspired by the battle screen in Deltarune; drawn here in CSS, no game assets used.
+- Colours: Light and Dark grew out of AutoEight's palette, adjusted for contrast.
