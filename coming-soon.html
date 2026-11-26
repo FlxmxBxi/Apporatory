@@ -68,6 +68,7 @@
   <symbol id="i-tree" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0-6 6c0 .6.1 1.2.3 1.8A4 4 0 0 0 8 18h8a4 4 0 0 0 1.7-7.2c.2-.6.3-1.2.3-1.8a6 6 0 0 0-6-6z"/><path d="M12 21v-7M12 16l-2.5-2M12 14.5l2.5-2"/></symbol>
 </svg>
 <div class="grid-bg" aria-hidden="true"><i class="grid-bg__b"></i><i class="grid-bg__a"></i></div>
+<canvas class="eb-bg" aria-hidden="true"></canvas>
 
 <header class="bar">
   <nav class="bar__tools" aria-label="Settings and account">
@@ -78,7 +79,7 @@
     <button type="button" class="tool" id="theme-toggle" aria-expanded="false" aria-controls="theme-panel">
       <svg class="icon" aria-hidden="true"><use href="#i-palette"/></svg><span class="tool__label">Theme</span>
     </button>
-    <button type="button" class="tool" data-sound-toggle aria-pressed="false">
+    <button type="button" class="tool" id="sound-toggle" aria-expanded="false" aria-controls="sound-panel">
       <svg class="icon icon--sound-off" aria-hidden="true"><use href="#i-sound-off"/></svg><svg class="icon icon--sound-on" aria-hidden="true"><use href="#i-sound"/></svg><span class="tool__label">Sound</span>
     </button>
     <a class="tool" href="coming-soon.html?page=log-in">Log in</a>
@@ -125,11 +126,73 @@
         <span class="theme-opt__desc">Strongest contrast, thickest outlines</span>
       </label>
     </fieldset>
+    <fieldset class="backgrounds">
+      <legend class="backgrounds__title">Background</legend>
+      <div class="bg-opts">
+        <label class="bg-opt">
+          <input type="radio" name="background" value="grid">
+          <span class="bg-opt__preview bg-opt__preview--grid" aria-hidden="true"></span>
+          <span class="bg-opt__name">Grid<svg class="icon bg-opt__tick" aria-hidden="true"><use href="#i-check"/></svg></span>
+        </label>
+        <label class="bg-opt" data-needs-webgl>
+          <input type="radio" name="background" value="ripple">
+          <canvas class="bg-opt__preview" data-preview="ripple" width="64" height="36" aria-hidden="true"></canvas>
+          <span class="bg-opt__name">Ripple<svg class="icon bg-opt__tick" aria-hidden="true"><use href="#i-check"/></svg></span>
+        </label>
+        <label class="bg-opt" data-needs-webgl>
+          <input type="radio" name="background" value="orbitals">
+          <canvas class="bg-opt__preview" data-preview="orbitals" width="64" height="36" aria-hidden="true"></canvas>
+          <span class="bg-opt__name">Orbitals<svg class="icon bg-opt__tick" aria-hidden="true"><use href="#i-check"/></svg></span>
+        </label>
+        <label class="bg-opt" data-needs-webgl>
+          <input type="radio" name="background" value="vortex">
+          <canvas class="bg-opt__preview" data-preview="vortex" width="64" height="36" aria-hidden="true"></canvas>
+          <span class="bg-opt__name">Vortex<svg class="icon bg-opt__tick" aria-hidden="true"><use href="#i-check"/></svg></span>
+        </label>
+        <label class="bg-opt" data-needs-webgl>
+          <input type="radio" name="background" value="signs">
+          <canvas class="bg-opt__preview" data-preview="signs" width="64" height="36" aria-hidden="true"></canvas>
+          <span class="bg-opt__name">Signs<svg class="icon bg-opt__tick" aria-hidden="true"><use href="#i-check"/></svg></span>
+        </label>
+        <label class="bg-opt" data-needs-webgl>
+          <input type="radio" name="background" value="shuffle">
+          <canvas class="bg-opt__preview" data-preview="shuffle" width="64" height="36" aria-hidden="true"></canvas>
+          <span class="bg-opt__name">Shuffle<svg class="icon bg-opt__tick" aria-hidden="true"><use href="#i-check"/></svg></span>
+        </label>
+      </div>
+      <p class="backgrounds__note" data-needs-webgl>Ripple, Orbitals, Vortex and Signs are pixel scenes in the style of EarthBound's battles. Shuffle moves to another background about once a minute.</p>
+    </fieldset>
     <div class="motion-row">
-      <span class="motion-row__label"><strong id="motion-label">Reduce motion</strong><span id="motion-desc">Stops the moving grid, the symbols, the sliding jobs and the click rings.</span></span>
+      <span class="motion-row__label"><strong id="motion-label">Reduce motion</strong><span id="motion-desc">Stops the moving background, the symbols, the sliding jobs and the click rings.</span></span>
       <button type="button" class="switch" id="motion-switch" role="switch" aria-checked="false" aria-labelledby="motion-label" aria-describedby="motion-desc"></button>
     </div>
     <button type="button" class="theme-panel__done" data-close-themes>Done</button>
+  </div>
+  <div class="theme-panel sound-panel" id="sound-panel" role="dialog" aria-labelledby="sound-panel-title" hidden>
+    <h2 class="theme-panel__title" id="sound-panel-title">Sound</h2>
+    <div class="motion-row sound-row">
+      <span class="motion-row__label"><strong id="sound-label">Music and pops</strong><span id="sound-desc">Relaxing music picked at random, and a soft pop with every click ring. Off until you turn it on.</span></span>
+      <button type="button" class="switch" id="sound-switch" role="switch" aria-checked="false" aria-labelledby="sound-label" aria-describedby="sound-desc"></button>
+    </div>
+    <p class="now-playing"><span class="now-playing__label">Now playing</span><span class="now-playing__title" data-now-title>Nothing yet</span><span class="now-playing__artist" data-now-artist>Turn sound on to start the music.</span></p>
+    <div class="sliders">
+      <div class="slider">
+        <label class="slider__label" for="volume-master">Master</label>
+        <output class="slider__value" for="volume-master" data-volume-out="master">100%</output>
+        <input class="slider__input" type="range" id="volume-master" min="0" max="100" step="1" value="100" data-volume="master">
+      </div>
+      <div class="slider">
+        <label class="slider__label" for="volume-music">Music</label>
+        <output class="slider__value" for="volume-music" data-volume-out="music">80%</output>
+        <input class="slider__input" type="range" id="volume-music" min="0" max="100" step="1" value="80" data-volume="music">
+      </div>
+      <div class="slider">
+        <label class="slider__label" for="volume-effects">Sound effects</label>
+        <output class="slider__value" for="volume-effects" data-volume-out="effects">70%</output>
+        <input class="slider__input" type="range" id="volume-effects" min="0" max="100" step="1" value="70" data-volume="effects">
+      </div>
+    </div>
+    <button type="button" class="theme-panel__done" data-close-panel>Done</button>
   </div>
 </header>
 
@@ -140,12 +203,13 @@
       <h1 class="soon__title" data-soon-title>This page is coming soon</h1>
       <p class="soon__text">This part of Apporatory is still being built. The home page is ready to explore now.</p>
       <a class="button button--primary" href="index.html"><svg class="icon" aria-hidden="true"><use href="#i-back"/></svg>Back to the home page</a>
-      <p class="soon__credit">Music: “Study And Relax” by Kevin MacLeod (<a href="https://incompetech.com">incompetech.com</a>), licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>, looped and made quieter.</p>
+      <p class="soon__credit">Music: “Study And Relax”, “Cool Vibes” and “Bossa Antigua” by Kevin MacLeod (<a href="https://incompetech.com">incompetech.com</a>), licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>, trimmed and made quieter. “Morning Coffee” by HoliznaCC0 is public domain (CC0).</p>
     </div>
   </div>
 </main>
 
 <script src="js/site.js"></script>
+<script src="js/backgrounds.js"></script>
 <script src="js/sound.js"></script>
 </body>
 </html>

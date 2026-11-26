@@ -1,10 +1,12 @@
-/* Runs before first paint so the page never flashes the wrong theme.
-   Order: ?theme= / ?motion= in the address, then the visitor's saved choice,
-   then the device's light/dark and reduced-motion settings. */
+/* Runs before first paint so the page never flashes the wrong theme or
+   background. Order: ?theme= / ?motion= / ?bg= in the address, then the
+   visitor's saved choice, then the device's light/dark and reduced-motion
+   settings (the background defaults to the grid). */
 (function () {
   var d = document.documentElement;
   var themes = ['light', 'dark', 'red-green', 'blue-yellow', 'greyscale', 'high-contrast'];
-  var q, s = null, t, m;
+  var backgrounds = ['grid', 'ripple', 'orbitals', 'vortex', 'signs', 'shuffle'];
+  var q, s = null, t, m, b;
   try { q = new URLSearchParams(location.search); } catch (e) { q = { get: function () { return null; } }; }
   try { s = window.localStorage; } catch (e) { s = null; }
   t = q.get('theme');
@@ -15,4 +17,8 @@
   if (m !== 'on' && m !== 'off') m = s && s.getItem('apporatory:motion');
   if (m !== 'on' && m !== 'off') m = matchMedia('(prefers-reduced-motion: reduce)').matches ? 'off' : 'on';
   d.setAttribute('data-motion', m);
+  b = q.get('bg');
+  if (backgrounds.indexOf(b) < 0) b = s && s.getItem('apporatory:background');
+  if (backgrounds.indexOf(b) < 0) b = 'grid';
+  d.setAttribute('data-background', b);
 })();

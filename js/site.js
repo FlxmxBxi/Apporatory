@@ -40,13 +40,53 @@
   document.addEventListener('visibilitychange', syncHidden);
   syncHidden();
 
+  // -------------------------------------------------------------- panels --
+  // The Themes and Sound panels: one open at a time; Escape, Done or a click
+  // outside closes it, and focus goes back to whatever opened it.
+  var openPanelApi = null;
+  function makePanel(button, box, firstFocus, onOpen) {
+    if (!button || !box) return null;
+    var opener = null;
+    var api = {};
+    function onKey(e) { if (e.key === 'Escape') { e.preventDefault(); api.close(true); } }
+    function onOutside(e) { if (!box.contains(e.target) && !button.contains(e.target)) api.close(false); }
+    api.open = function (from) {
+      if (openPanelApi && openPanelApi !== api) openPanelApi.close(false);
+      opener = from || button;
+      if (onOpen) onOpen();
+      box.hidden = false;
+      button.setAttribute('aria-expanded', 'true');
+      var f = firstFocus();
+      if (f) f.focus();
+      document.addEventListener('keydown', onKey);
+      document.addEventListener('pointerdown', onOutside, true);
+      openPanelApi = api;
+    };
+    api.close = function (returnFocus) {
+      if (box.hidden) return;
+      box.hidden = true;
+      button.setAttribute('aria-expanded', 'false');
+      document.removeEventListener('keydown', onKey);
+      document.removeEventListener('pointerdown', onOutside, true);
+      if (openPanelApi === api) openPanelApi = null;
+      if (returnFocus && opener) opener.focus();
+    };
+    button.addEventListener('click', function () { if (box.hidden) api.open(button); else api.close(true); });
+    Array.prototype.forEach.call(box.querySelectorAll('[data-close-themes], [data-close-panel]'), function (b) {
+      b.addEventListener('click', function () { api.close(true); });
+    });
+    box.addEventListener('focusout', function (e) {
+      if (!box.hidden && e.relatedTarget && !box.contains(e.relatedTarget) && e.relatedTarget !== button) api.close(false);
+    });
+    return api;
+  }
+
   // -------------------------------------------------------- theme panel --
   var toggle = document.getElementById('theme-toggle');
   var panel = document.getElementById('theme-panel');
   var radios = panel ? Array.prototype.slice.call(panel.querySelectorAll('input[name="theme"]')) : [];
   var motionSwitch = document.getElementById('motion-switch');
   var regradeTimer = 0;
-  var lastOpener = null;
 
   function currentTheme() { return root.getAttribute('data-theme') || 'light'; }
   function syncControls() {
@@ -84,49 +124,21 @@
     emit('apporatory:motion', { off: off });
   }
 
-  function onKey(e) {
-    if (e.key === 'Escape') { e.preventDefault(); closePanel(true); }
-  }
-  function onOutside(e) {
-    if (!panel.contains(e.target) && !(toggle && toggle.contains(e.target))) closePanel(false);
-  }
-  function openPanel(opener) {
-    if (!panel) return;
-    lastOpener = opener || toggle;
-    syncControls();
-    panel.hidden = false;
-    if (toggle) toggle.setAttribute('aria-expanded', 'true');
-    var checked = panel.querySelector('input[name="theme"]:checked') || radios[0];
-    if (checked) checked.focus();
-    document.addEventListener('keydown', onKey);
-    document.addEventListener('pointerdown', onOutside, true);
-  }
-  function closePanel(returnFocus) {
-    if (!panel || panel.hidden) return;
-    panel.hidden = true;
-    if (toggle) toggle.setAttribute('aria-expanded', 'false');
-    document.removeEventListener('keydown', onKey);
-    document.removeEventListener('pointerdown', onOutside, true);
-    if (returnFocus && lastOpener) lastOpener.focus();
-  }
-
-  if (toggle && panel) {
-    toggle.addEventListener('click', function () {
-      if (panel.hidden) openPanel(toggle); else closePanel(true);
-    });
+  var themesPanel = makePanel(toggle, panel, function () {
+    return panel.querySelector('input[name="theme"]:checked') || radios[0];
+  }, syncControls);
+  if (themesPanel) {
     radios.forEach(function (r) {
       r.addEventListener('change', function () { setTheme(r.value, r.closest('.theme-opt'), true); });
     });
     if (motionSwitch) motionSwitch.addEventListener('click', function () { setMotion(!motionOff(), true); });
-    var done = panel.querySelector('[data-close-themes]');
-    if (done) done.addEventListener('click', function () { closePanel(true); });
-    panel.addEventListener('focusout', function (e) {
-      if (!panel.hidden && e.relatedTarget && !panel.contains(e.relatedTarget) && e.relatedTarget !== toggle) closePanel(false);
-    });
     Array.prototype.forEach.call(document.querySelectorAll('[data-open-themes]'), function (b) {
-      b.addEventListener('click', function () { openPanel(b); });
+      b.addEventListener('click', function () { themesPanel.open(b); });
     });
   }
+  makePanel(document.getElementById('sound-toggle'), document.getElementById('sound-panel'), function () {
+    return document.getElementById('sound-switch');
+  });
   syncControls();
 
   // Until the visitor chooses, follow the device.
