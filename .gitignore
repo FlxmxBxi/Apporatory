@@ -1,0 +1,20 @@
+# Skill working folders: scroll-craft workspace (builds, lab, fingerprints), Cook run state
+scrollcraft/
+cook/
+cook-archive/
+.taste-skill/
+
+# Screenshots, generated assets and render frames written by the skills' scripts
+lab/
+out/
+frames/
+
+node_modules/
+
+# kie.ai key and other local secrets
+.env
+.env.*
+!.env.example
+
+.DS_Store
+*.log
