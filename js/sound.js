@@ -60,7 +60,7 @@
     if (ctx) return;
     ctx = new AC();
     popOut = ctx.createGain();
-    popOut.gain.value = 0.75;
+    popOut.gain.value = 0.53;
     popOut.connect(ctx.destination);
     noise = ctx.createBuffer(1, Math.floor(ctx.sampleRate * 0.05), ctx.sampleRate);
     var nd = noise.getChannelData(0);

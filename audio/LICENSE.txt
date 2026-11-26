@@ -21,7 +21,7 @@ Changes made for Apporatory
   original this section repeats sample for sample, so its end runs straight
   back into its start; a 1-second crossfade is baked into the head of the file
   as a safety margin, and the file plays on a loop.
-- Lowered the level by 5.5 dB to about -24 LUFS so it sits quietly under the
+- Lowered the level by 2.5 dB to about -21 LUFS so it sits quietly under the
   page, including on phones that ignore volume settings.
 - Re-encoded from the original 320 kbps MP3 to a 160 kbps MP3 (about 2 MB).
 
