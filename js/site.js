@@ -148,16 +148,33 @@
     var list = roles.querySelector('.roles__list');
     var viewport = roles.querySelector('.roles__viewport');
     var rolesPause = roles.querySelector('[data-roles-pause]');
-    var copy = list.cloneNode(true);
-    copy.setAttribute('aria-hidden', 'true');
-    copy.removeAttribute('aria-label');
-    copy.removeAttribute('id');
-    track.appendChild(copy);
+    var echo = function (source) {
+      var c = source.cloneNode(true);
+      c.setAttribute('aria-hidden', 'true');
+      c.removeAttribute('aria-label');
+      c.removeAttribute('id');
+      return c;
+    };
+    track.appendChild(echo(list));
+
+    // A second row, in a different order, drifting the other way. Screen
+    // readers only ever hear the first list.
+    var listB = echo(list);
+    var items = Array.prototype.slice.call(listB.children);
+    items.slice(0, Math.floor(items.length / 2)).forEach(function (li) { listB.appendChild(li); });
+    var trackB = document.createElement('div');
+    trackB.className = 'roles__track roles__track--b';
+    trackB.setAttribute('aria-hidden', 'true');
+    trackB.appendChild(listB);
+    trackB.appendChild(echo(listB));
+    viewport.appendChild(trackB);
 
     var pace = function () {
-      var width = list.getBoundingClientRect().width;
       var speed = window.innerWidth < 640 ? 26 : 36; // px per second: slow enough to read
-      if (width) track.style.setProperty('--roles-dur', Math.round(width / speed) + 's');
+      [[track, list], [trackB, listB]].forEach(function (pair, i) {
+        var width = pair[1].getBoundingClientRect().width;
+        if (width) pair[0].style.setProperty('--roles-dur', Math.round(width / (speed * (i ? 0.8 : 1))) + 's');
+      });
     };
     pace();
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(pace);

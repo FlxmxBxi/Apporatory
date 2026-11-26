@@ -369,6 +369,7 @@ a { color: inherit; }
   background: var(--bg);
   color: var(--ink);
   box-shadow: var(--sc-e3);
+  pointer-events: auto;
 }
 .theme-panel[hidden] { display: none; }
 .theme-panel__title {
@@ -760,7 +761,7 @@ a { color: inherit; }
 .roles__stage {
   display: grid;
   align-content: center;
-  gap: clamp(1.75rem, 5svh, 3.5rem);
+  gap: clamp(2rem, 6.5svh, 4.75rem);
   background: var(--bg);
   overflow: clip;
 }
@@ -768,7 +769,7 @@ a { color: inherit; }
   margin: 0;
   font-family: var(--sc-font-display);
   font-weight: 800;
-  font-size: clamp(2.4rem, 1.2rem + 5.2vw, 6.4rem);
+  font-size: clamp(2.6rem, 1.2rem + 6vw, 7.4rem);
   line-height: 0.98;
   letter-spacing: -0.04em;
   color: var(--ink);
@@ -798,7 +799,7 @@ a { color: inherit; }
   display: inline-flex;
   align-items: center;
   gap: 0.55em;
-  font-size: clamp(1.5rem, 1.05rem + 1.9vw, 2.9rem);
+  font-size: clamp(1.6rem, 1.05rem + 2.4vw, 3.4rem);
   font-weight: 700;
   line-height: 1.15;
   letter-spacing: -0.02em;
@@ -817,6 +818,15 @@ a { color: inherit; }
 .role[data-field="chemistry"] { --role-c: var(--chemistry); }
 .role[data-field="biology"] { --role-c: var(--biology); }
 @keyframes roles-slide { to { transform: translate3d(-50%, 0, 0); } }
+.roles__viewport { display: grid; gap: clamp(0.6rem, 2svh, 1.5rem); }
+/* The far row: smaller, softer, slower, drifting the other way. */
+.roles__track--b { animation-direction: reverse; }
+.roles__track--b .role {
+  font-size: clamp(1.15rem, 0.85rem + 1.35vw, 2.2rem);
+  font-weight: 600;
+  color: var(--ink-2);
+}
+html[data-motion="off"] .roles__track--b { display: none; }
 .roles.is-paused .roles__track,
 .roles.is-offscreen .roles__track,
 .roles:focus-within .roles__track { animation-play-state: paused; }
@@ -852,6 +862,7 @@ html[data-motion="off"] .role { font-size: clamp(1.15rem, 0.95rem + 0.8vw, 1.6re
 html[data-motion="off"] .roles__controls,
 html[data-motion="off"] .pause--hero { display: none; }
 @media (prefers-reduced-motion: reduce) {
+  .roles__track--b { display: none; }
   .roles__track { animation: none; width: auto; }
   .roles__list { flex-wrap: wrap; row-gap: 0.9rem; padding: 0; }
   .roles__list[aria-hidden="true"] { display: none; }
@@ -954,7 +965,12 @@ html.is-regrading *::after {
   .goals__list li { grid-template-columns: 2.1rem minmax(0, 1fr); gap: 0.75rem; }
   .goals__list .icon { width: 1.6rem; height: 1.6rem; }
   .roles__controls { justify-content: flex-start; }
-  .foot__inner { flex-direction: column; align-items: flex-start; }
+  .roles__stage { gap: 2.5rem; }
+  .roles__title { font-size: clamp(2.6rem, 1rem + 9vw, 3.6rem); }
+  .role { font-size: 1.85rem; }
+  .roles__track--b .role { font-size: 1.3rem; }
+  .foot__inner { flex-direction: column; align-items: flex-start; gap: 0.25rem; padding-block: 1rem 1.5rem; }
+  .foot__links { gap: 0 1.25rem; }
 }
 @media (max-width: 380px) {
   .tool__label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
