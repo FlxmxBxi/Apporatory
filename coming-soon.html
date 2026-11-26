@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en-GB" data-theme="light" data-motion="on">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Coming soon · Apporatory</title>
+<meta name="description" content="This part of Apporatory is still being built.">
+<meta name="robots" content="noindex">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23f6f1ea'/%3E%3Cpath d='M13 6h6M14 6.5v7L8.5 23a1.6 1.6 0 0 0 1.4 2.4h12.2a1.6 1.6 0 0 0 1.4-2.4L18 13.5v-7' fill='none' stroke='%239c3f2a' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<script src="js/boot.js"></script>
+<link rel="preload" href="fonts/atkinson-hyperlegible-next-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="vendor/scrollcraft.css">
+<link rel="stylesheet" href="css/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="bar">
+  <nav class="bar__tools" aria-label="Settings and account">
+    <button type="button" class="tool" id="theme-toggle" aria-expanded="false" aria-controls="theme-panel">
+      <svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-palette"/></svg><span class="tool__label">Theme</span>
+    </button>
+    <a class="tool" href="coming-soon.html?page=log-in">Log in</a>
+  </nav>
+  <div class="theme-panel" id="theme-panel" role="dialog" aria-labelledby="theme-panel-title" hidden>
+    <h2 class="theme-panel__title" id="theme-panel-title">Themes</h2>
+    <p class="theme-panel__hint">Pick the colours that are easiest for you. This device will remember them.</p>
+    <fieldset class="themes">
+      <legend class="visually-hidden">Colour theme</legend>
+      <label class="theme-opt">
+        <input type="radio" name="theme" value="light">
+        <span class="swatch" data-theme="light" aria-hidden="true"><span class="swatch__text"><i></i><i></i></span><span class="swatch__btn"></span><span class="swatch__dots"><b></b><b></b><b></b><b></b></span></span>
+        <span class="theme-opt__name">Light<svg class="icon theme-opt__tick" aria-hidden="true"><use href="img/icons.svg#i-check"/></svg></span>
+        <span class="theme-opt__desc">Bright and friendly</span>
+      </label>
+      <label class="theme-opt">
+        <input type="radio" name="theme" value="dark">
+        <span class="swatch" data-theme="dark" aria-hidden="true"><span class="swatch__text"><i></i><i></i></span><span class="swatch__btn"></span><span class="swatch__dots"><b></b><b></b><b></b><b></b></span></span>
+        <span class="theme-opt__name">Dark<svg class="icon theme-opt__tick" aria-hidden="true"><use href="img/icons.svg#i-check"/></svg></span>
+        <span class="theme-opt__desc">Easy on the eyes at night</span>
+      </label>
+      <label class="theme-opt">
+        <input type="radio" name="theme" value="red-green">
+        <span class="swatch" data-theme="red-green" aria-hidden="true"><span class="swatch__text"><i></i><i></i></span><span class="swatch__btn"></span><span class="swatch__dots"><b></b><b></b><b></b><b></b></span></span>
+        <span class="theme-opt__name">Red–green friendly<svg class="icon theme-opt__tick" aria-hidden="true"><use href="img/icons.svg#i-check"/></svg></span>
+        <span class="theme-opt__desc">Blues and oranges, for red–green colour blindness</span>
+      </label>
+      <label class="theme-opt">
+        <input type="radio" name="theme" value="blue-yellow">
+        <span class="swatch" data-theme="blue-yellow" aria-hidden="true"><span class="swatch__text"><i></i><i></i></span><span class="swatch__btn"></span><span class="swatch__dots"><b></b><b></b><b></b><b></b></span></span>
+        <span class="theme-opt__name">Blue–yellow friendly<svg class="icon theme-opt__tick" aria-hidden="true"><use href="img/icons.svg#i-check"/></svg></span>
+        <span class="theme-opt__desc">Reds and teals, for blue–yellow colour blindness</span>
+      </label>
+      <label class="theme-opt">
+        <input type="radio" name="theme" value="greyscale">
+        <span class="swatch" data-theme="greyscale" aria-hidden="true"><span class="swatch__text"><i></i><i></i></span><span class="swatch__btn"></span><span class="swatch__dots"><b></b><b></b><b></b><b></b></span></span>
+        <span class="theme-opt__name">Greyscale<svg class="icon theme-opt__tick" aria-hidden="true"><use href="img/icons.svg#i-check"/></svg></span>
+        <span class="theme-opt__desc">No colour: shapes, patterns and contrast</span>
+      </label>
+      <label class="theme-opt">
+        <input type="radio" name="theme" value="high-contrast">
+        <span class="swatch" data-theme="high-contrast" aria-hidden="true"><span class="swatch__text"><i></i><i></i></span><span class="swatch__btn"></span><span class="swatch__dots"><b></b><b></b><b></b><b></b></span></span>
+        <span class="theme-opt__name">High contrast<svg class="icon theme-opt__tick" aria-hidden="true"><use href="img/icons.svg#i-check"/></svg></span>
+        <span class="theme-opt__desc">Strongest contrast, thicker outlines</span>
+      </label>
+    </fieldset>
+    <div class="motion-row">
+      <span class="motion-row__label"><strong id="motion-label">Reduce motion</strong><span id="motion-desc">Stops the moving symbols and the sliding list of jobs.</span></span>
+      <button type="button" class="switch" id="motion-switch" role="switch" aria-checked="false" aria-labelledby="motion-label" aria-describedby="motion-desc"></button>
+    </div>
+    <button type="button" class="theme-panel__done" data-close-themes>Done</button>
+  </div>
+</header>
+
+<main id="main" class="soon">
+  <div class="sc-wrap soon__inner">
+    <svg class="icon soon__art" viewBox="0 0 24 24" aria-hidden="true"><use href="img/icons.svg#i-flask"/></svg>
+    <h1 class="soon__title" data-soon-title>This page is coming soon</h1>
+    <p class="soon__text">This part of Apporatory is still being built. The home page is ready to explore now.</p>
+    <a class="button button--primary" href="index.html"><svg class="icon" aria-hidden="true"><use href="img/icons.svg#i-back"/></svg>Back to the home page</a>
+  </div>
+</main>
+
+<script src="js/site.js"></script>
+</body>
+</html>
